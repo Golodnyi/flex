@@ -22,7 +22,7 @@ pub fn new(listener: TcpListener) {
             let mut data = vec![0, 34];
 
             while match stream.read(&mut data) {
-                Ok(size) => {
+                Ok(_size) => {
                     // TODO: check return byte size
                     let handshake = fill_data(&data);
                     println!("{:?}", handshake);                    
