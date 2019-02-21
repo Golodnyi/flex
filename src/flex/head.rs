@@ -1,9 +1,9 @@
 #[derive(Debug)]
-struct Head {
-    preamble: Vec<char>,
-    idr     : u32,
-    ids     : u32,
-    size    : u16,
-    csd     : u8,
-    csp     : u8
+pub struct Head {
+    pub preamble: Vec<char>,
+    pub idr     : u32,
+    pub ids     : u32,
+    pub size    : u16,
+    pub csd     : u8,
+    pub csp     : u8
 }
