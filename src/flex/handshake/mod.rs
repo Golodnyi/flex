@@ -16,7 +16,6 @@ struct Handshake {
 }
 
 pub fn new(listener: TcpListener) {
-
     for stream in listener.incoming() {
         thread::spawn(|| {
             let mut stream = stream.unwrap();
