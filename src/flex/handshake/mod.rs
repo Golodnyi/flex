@@ -1,12 +1,10 @@
 extern crate byteorder;
 
 use super::head;
-use std::io::Cursor;
-use byteorder::{BigEndian, ReadBytesExt};
-use std::io::Write;
-use std::io::Read;
-use std::net::{TcpListener, Shutdown};
 use std::thread;
+use tokio::net::tcp::Incoming;
+use serialport::SerialPort;
+use tokio::prelude::*;
 
 #[derive(Debug)]
 struct Handshake {
@@ -15,29 +13,14 @@ struct Handshake {
     imei    : Vec<char>
 }
 
-pub fn new(listener: TcpListener) {
-    for stream in listener.incoming() {
-        thread::spawn(|| {
-            let mut stream = stream.unwrap();
-            let mut data = vec![0, 34];
+pub fn socket(stream: Incoming) {
+    let (reader, writer) = stream.split();
+    let handshake = fill_data(&reader);
+}
 
-            while match stream.read(&mut data) {
-                Ok(_size) => {
-                    // TODO: check return byte size
-                    let handshake = fill_data(&data);
-                    println!("{:?}", handshake);                    
-
-                    true
-                },
-                Err(_) => {
-                    println!("An error occurred, terminating connection with {}", stream.peer_addr().unwrap());
-                    stream.shutdown(Shutdown::Both).unwrap();
-
-                    false
-                }
-            } {}
-        });
-    }
+pub fn com_port(stream: &SerialPort) {
+    thread::spawn(|| {
+    });
 }
 
 fn fill_data(data: &[u8]) -> Handshake {
